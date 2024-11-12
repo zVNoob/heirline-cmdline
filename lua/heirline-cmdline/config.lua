@@ -3,7 +3,7 @@
 --- @field abbr? string
 --- @field preabbr? string
 
---- @alias HierlineCmdlineSourceProvider fun(cmd_text: string, partial?: string, index?: number): HierlineCmdlineCompletionItem[],any?
+--- @alias HierlineCmdlineSourceProvider fun(cmd_text: string, partial?: string, index?: number): HierlineCmdlineCompletionItem[]
 
 --- @type HierlineCmdlineSourceProvider
 local function CmdlineDefaultProvider(cmd_text)

@@ -108,8 +108,14 @@ local function ui_handler(event, ...)
 			cur_win = vim.api.nvim_get_current_win()
 			set_size()
 			window = vim.api.nvim_open_win(buffer, false, win_config)
-			vim.api.nvim_set_option_value("winhighlight", "Normal:StatusLine", { scope = "local", win = window })
-			completion.show(win_config, cmd_text)
+			vim.api.nvim_set_option_value(
+				"winhighlight",
+				"Normal:StatusLine,Search:,IncSearch:",
+				{ scope = "local", win = window }
+			)
+			vim.schedule(function()
+				completion.show(win_config, cmd_text)
+			end)
 		end
 		vim.cmd.redraw()
 		-- if not rendered then
@@ -148,6 +154,7 @@ local function ui_handler(event, ...)
 		vim.api.nvim_win_close(window, true)
 		completion.hide()
 		window = -1
+		vim.cmd.redraw()
 	end
 end
 
