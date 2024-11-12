@@ -6,18 +6,17 @@ local M = {}
 --- @param config? HierlineCmdlineConfig
 --- @return StatusLine
 function M.setup(config)
+	local plugin_config = require("heirline-cmdline.config")
+	if config then
+		plugin_config.get_config(config)
+	end
 	--- @diagnostic disable
 	local cmdline = require("heirline-cmdline.cmdline")
 	local completion = require("heirline-cmdline.completion")
 	---@diagnostic enable
-
-	local plugin_config = require("heirline-cmdline.config")
-	if config then
-		plugin_config.config(config)
-	end
 	return {
 		provider = function()
-			return plugin_config.placeholder_char
+			return plugin_config.config.placeholder_char
 		end,
 		hl = function()
 			if conditions.is_active() then

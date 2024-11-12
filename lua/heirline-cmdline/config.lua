@@ -7,13 +7,14 @@
 
 --- @type HierlineCmdlineSourceProvider
 local function CmdlineDefaultProvider(cmd_text)
-  cmd_text = cmd_text:sub(2):gsub('\\', '\\\\')
-  local res = vim.tbl_map(function(i)
-    return { text = i }
-  end, vim.fn.getcompletion(cmd_text, 'cmdline'))
-  vim.notify(vim.inspect(res))
-  return res
+	cmd_text = cmd_text:sub(2):gsub("\\", "\\\\")
+	local res = vim.tbl_map(function(i)
+		return { text = i }
+	end, vim.fn.getcompletion(cmd_text, "cmdline"))
+	return res
 end
+
+local M = {}
 
 --- @class HierlineCmdlineSource
 --- @field patterns string[]
@@ -24,23 +25,24 @@ end
 --- @field placeholder_char string
 --- @field max_item number
 --- @field source HierlineCmdlineSource[]
-local M = {
-  max_item = 7,
-  placeholder_char = '￼',
-  source = {
-    {
-      patterns = { '.*' },
-      provider = CmdlineDefaultProvider,
-    },
-  },
+---
+M.config = {
+	max_item = 7,
+	placeholder_char = "￼",
+	source = {
+		{
+			patterns = { ".*" },
+			provider = CmdlineDefaultProvider,
+		},
+	},
 }
 
 ---@param input HierlineCmdlineConfig
-function M.config(input)
-  M = vim.tbl_extend('force', M, input)
-  M.source = vim.tbl_map(function(item)
-    return vim.tbl_extend('force', { no_cache = false }, item)
-  end, M.source)
+function M.get_config(input)
+	M.config = vim.tbl_extend("force", M.config, input)
+	M.config.source = vim.tbl_map(function(item)
+		return vim.tbl_extend("force", { no_cache = false }, item)
+	end, M.config.source)
 end
 
 return M

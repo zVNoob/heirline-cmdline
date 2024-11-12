@@ -1,4 +1,4 @@
-local config = require("heirline-cmdline.config")
+local config = require("heirline-cmdline.config").config
 local completion = require("heirline-cmdline.completion")
 
 local cmdline = vim.api.nvim_create_namespace("heirline_cmdline")

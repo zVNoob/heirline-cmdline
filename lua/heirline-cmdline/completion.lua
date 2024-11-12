@@ -1,4 +1,4 @@
-local config = require("heirline-cmdline.config")
+local config = require("heirline-cmdline.config").config
 local source = require("heirline-cmdline.sources")
 
 local menu = -1
@@ -95,6 +95,7 @@ function M.show(win_config, cmd_text)
 	_cmd_text = cmd_text
 	if menu ~= -1 then
 		vim.api.nvim_win_close(menu, true)
+		menu = -1
 	end
 
 	if buffer ~= -1 then
@@ -109,7 +110,7 @@ function M.show(win_config, cmd_text)
 	vim.api.nvim_buf_set_lines(buffer, 0, #res, false, res)
 	old_win_config = vim.deepcopy(win_config)
 	old_win_config.row = win_config.row - 1
-	old_win_config.height = config.max_item
+	old_win_config.height = math.min(config.max_item, #res, old_win_config.row)
 	local len = cmd_text:find(" [^ ]*$")
 	if len == nil then
 		len = 0
@@ -119,10 +120,8 @@ function M.show(win_config, cmd_text)
 		width = -1
 		col = old_win_config.col
 	end
-	if width == -1 then
-		for _, i in pairs(res) do
-			width = math.max(width, #i)
-		end
+	for _, i in pairs(res) do
+		width = math.max(width, #i)
 	end
 	old_win_config.width = width
 	choice = 1
@@ -131,11 +130,12 @@ function M.show(win_config, cmd_text)
 	else
 		map_confirm()
 	end
-
-	menu = vim.api.nvim_open_win(buffer, false, old_win_config)
-	vim.api.nvim_win_set_cursor(menu, { 1, 0 })
-	vim.api.nvim_set_option_value("winhighlight", "NormalNC:StatusLine", { win = menu })
-	vim.api.nvim_set_option_value("cursorline", true, { win = menu })
+	if #res ~= 0 then
+		menu = vim.api.nvim_open_win(buffer, false, old_win_config)
+		vim.api.nvim_win_set_cursor(menu, { 1, 0 })
+		vim.api.nvim_set_option_value("winhighlight", "NormalNC:StatusLine", { win = menu })
+		vim.api.nvim_set_option_value("cursorline", true, { win = menu })
+	end
 end
 
 function M.hide()
