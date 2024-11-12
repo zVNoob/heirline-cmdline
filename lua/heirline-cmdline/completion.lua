@@ -29,21 +29,25 @@ local choice = 1
 local _cmd_text = ""
 
 local function move_down()
-	if buffer ~= -1 then
+	if menu ~= -1 then
 		local len = #vim.api.nvim_buf_get_text(buffer, 0, 0, -1, 0, {})
 		if choice < len then
 			choice = choice + 1
-			vim.api.nvim_win_set_cursor(menu, { choice, 0 })
+		else
+			choice = 1
 		end
+		vim.api.nvim_win_set_cursor(menu, { choice, 0 })
 	end
 end
 
 local function move_up()
-	if buffer ~= -1 then
+	if menu ~= -1 then
 		if choice > 1 then
 			choice = choice - 1
-			vim.api.nvim_win_set_cursor(menu, { choice, 0 })
+		else
+			choice = math.max(#vim.api.nvim_buf_get_text(buffer, 0, 0, -1, 0, {}), 1)
 		end
+		vim.api.nvim_win_set_cursor(menu, { choice, 0 })
 	end
 end
 
