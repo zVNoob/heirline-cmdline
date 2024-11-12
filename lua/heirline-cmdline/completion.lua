@@ -110,7 +110,7 @@ function M.show(win_config, cmd_text)
 	old_win_config = vim.deepcopy(win_config)
 	old_win_config.row = win_config.row - 1
 	old_win_config.height = config.max_item
-	local len = cmd_text:find(" [^ ]+$")
+	local len = cmd_text:find(" [^ ]*$")
 	if len == nil then
 		len = 0
 	end
