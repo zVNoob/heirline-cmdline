@@ -55,8 +55,8 @@ local mapped = false
 
 local function unmap_confirm()
 	if mapped then
-		vim.keymap.del("c", "<CR>")
-		vim.keymap.del("c", "<M-CR>")
+		vim.keymap.del("c", config.keymap.confirm)
+		vim.keymap.del("c", config.keymap.force)
 		mapped = false
 	end
 end
@@ -73,14 +73,14 @@ local function confirm()
 end
 
 local function map_key()
-	vim.keymap.set("c", "<Tab>", move_down)
-	vim.keymap.set("c", "<S-Tab>", move_up)
+	vim.keymap.set("c", config.keymap.next, move_down)
+	vim.keymap.set("c", config.keymap.prev, move_up)
 end
 
 local function map_confirm()
 	if not mapped then
-		vim.keymap.set("c", "<CR>", confirm)
-		vim.keymap.set("c", "<M-CR>", "<CR>")
+		vim.keymap.set("c", config.keymap.confirm, confirm)
+		vim.keymap.set("c", config.keymap.force, "<CR>")
 		mapped = true
 	end
 end

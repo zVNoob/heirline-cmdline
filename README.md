@@ -27,6 +27,12 @@ return {
 require('heirline-cmdline').setup({
 	max_item = 7,
 	placeholder_char = "￼",
+	keymap = {
+	    confirm = "<CR>",
+	    next = "<Tab>",
+	    prev = "<S-Tab>",
+	    force = "<M-CR>",
+    },
 })
 ```
 ## How it work
