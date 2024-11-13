@@ -7,7 +7,7 @@ local M = {}
 function M.get_cmp(cmd_text)
 	for _, i in pairs(vim.fn.range(#config.source, 1, -1)) do
 		for _, s in pairs(config.source[i].patterns) do
-			local ok = pcall(string.match, cmd_text, s)
+			local ok = vim.regex(s):match_str(cmd_text)
 			if ok then
 				return config.source[i].provider(cmd_text)
 			end

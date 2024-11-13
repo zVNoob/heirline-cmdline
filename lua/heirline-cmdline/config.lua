@@ -30,7 +30,7 @@ M.config = {
 	placeholder_char = "￼",
 	source = {
 		{
-			patterns = { ".*" },
+			patterns = { ":.*" },
 			provider = CmdlineDefaultProvider,
 		},
 	},

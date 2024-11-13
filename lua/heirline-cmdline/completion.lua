@@ -45,8 +45,10 @@ local function set_map_confirm()
 	local len = _cmd_text:find(" [^ ]*$")
 	if len == nil then
 		len = 0
+	else
+		len = len + 1
 	end
-	if _cmd_text:sub(math.max(1, len)):find(vim.api.nvim_buf_get_lines(buffer, choice - 1, choice, false)[1]) then
+	if #_cmd_text - len == #vim.api.nvim_buf_get_lines(buffer, choice - 1, choice, false)[1] - 1 then
 		if mapped then
 			vim.keymap.del("c", config.keymap.confirm)
 			vim.keymap.del("c", config.keymap.force)
@@ -137,8 +139,12 @@ function M.show(win_config, cmd_text)
 	if #res ~= 0 then
 		menu = vim.api.nvim_open_win(buffer, false, old_win_config)
 		vim.api.nvim_win_set_cursor(menu, { 1, 0 })
-		vim.api.nvim_set_option_value("winhighlight", "NormalNC:StatusLine,Search:,IncSearch:", { win = menu })
-		vim.api.nvim_set_option_value("cursorline", true, { win = menu })
+		vim.api.nvim_set_option_value(
+			"winhighlight",
+			"NormalNC:StatusLine,Search:,IncSearch:",
+			{ scope = "local", win = menu }
+		)
+		vim.api.nvim_set_option_value("cursorline", true, { scope = "local", win = menu })
 	end
 end
 
