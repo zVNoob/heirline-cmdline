@@ -23,13 +23,13 @@ function M.setup(config)
 			-- end
 			return plugin_config.config.placeholder_char .. "%=" .. plugin_config.config.placeholder_char
 		end,
-		-- hl = function()
-		-- 	if conditions.is_active() then
-		-- 		return { fg = utils.get_highlight("StatusLine").bg, bg = utils.get_highlight("StatusLine").bg }
-		-- 	else
-		-- 		return { fg = utils.get_highlight("StatusLineNC").bg, bg = utils.get_highlight("StatusLineNC").bg }
-		-- 	end
-		-- end,
+		hl = function()
+			if conditions.is_active() then
+				return { fg = utils.get_highlight("StatusLine").bg, bg = utils.get_highlight("StatusLine").bg }
+			else
+				return { fg = utils.get_highlight("StatusLineNC").bg, bg = utils.get_highlight("StatusLineNC").bg }
+			end
+		end,
 	}
 end
 
