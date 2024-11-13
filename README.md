@@ -38,7 +38,7 @@ require('heirline-cmdline').setup({
 })
 ```
 ## How it work
-This plugin return an invisible U+FFFC (configurable) character which indicate the starting point of your potential cmdline, then do all the hack to render the remaining part properly
+This plugin return an invisible U+FFFC (configurable) character which indicate the starting and ending point of your potential cmdline, then do all the hack to render the remaining part properly
 ## TODO
 - [x] cmdline
     - [ ] highlighting

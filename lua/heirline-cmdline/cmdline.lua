@@ -35,6 +35,10 @@ local win_config = {
 local window = -1
 local cur_win = -1
 
+function M.cur_win()
+	return cur_win
+end
+
 --vim.opt_global.inccommand = "nosplit"
 
 -- fake cursor
@@ -52,8 +56,10 @@ local function set_size()
 		win_config.relative = "editor"
 		win_config.row = vim.o.lines - vim.o.cmdheight
 		width = vim.o.columns
+		win_config.win = nil
 	else
 		win_config.relative = "win"
+		win_config.win = cur_win
 		win_config.row = vim.api.nvim_win_get_height(cur_win) + 1
 		width_start = vim.api.nvim_win_get_position(cur_win)[2] + 1
 		row_offset = vim.api.nvim_win_get_position(cur_win)[1]
@@ -86,8 +92,16 @@ local function is_valid()
 	local width_start = 1
 	local row_offset = 0
 	if vim.o.laststatus ~= 3 then
-		width_start = vim.api.nvim_win_get_position(cur_win)[2] + 1
-		row_offset = vim.api.nvim_win_get_position(cur_win)[1]
+		while true do
+			local ok, res = pcall(vim.api.nvim_win_get_position, cur_win)
+			if ok then
+				width_start = res[2] + 1
+				row_offset = res[1]
+				break
+			else
+				cur_win = vim.api.nvim_get_current_win()
+			end
+		end
 	end
 	return vim.fn.nr2char(vim.fn.screenchar(win_config.row + row_offset, width_start + win_config.col - 1))
 			== config.placeholder_char
@@ -124,12 +138,18 @@ local function render(firstc, content)
 	end
 	if
 		(not is_valid() or window == -1)
-		and not (vim.api.nvim_get_mode().mode == "c" and vim.fn.getcmdline():find("s/"))
+		and not (
+			vim.api.nvim_get_mode().mode == "c"
+			and vim.fn.getcmdline():find("s/")
+			and vim.fn.has("nvim-0.11") ~= 1
+		)
 	then
 		if window ~= -1 then
 			vim.api.nvim_win_close(window, true)
 		end
-		cur_win = vim.api.nvim_get_current_win()
+		if vim.api.nvim_win_get_config(vim.api.nvim_get_current_win()).relative == "" then
+			cur_win = vim.api.nvim_get_current_win()
+		end
 		set_size()
 		window = vim.api.nvim_open_win(buffer, false, win_config)
 		vim.api.nvim_set_option_value(
