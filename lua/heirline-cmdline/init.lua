@@ -16,7 +16,11 @@ function M.setup(config)
 	---@diagnostic enable
 	return {
 		provider = function()
-			return plugin_config.config.placeholder_char
+			if conditions.is_active() then
+				return plugin_config.config.placeholder_char
+			else
+				return ""
+			end
 		end,
 		hl = function()
 			if conditions.is_active() then

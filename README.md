@@ -16,9 +16,11 @@ return {
   event = 'UiEnter',
   config = function()
     require('heirline').setup {
-	    ...,
+       statusline = {
+        ...,
 	    require('heirline-cmdline').setup({}),
 	    ...,
+       }
     }
 }
 ```

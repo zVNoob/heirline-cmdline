@@ -44,11 +44,9 @@ end
 local function set_map_confirm()
 	local len = _cmd_text:find(" [^ ]*$")
 	if len == nil then
-		len = 0
-	else
-		len = len + 1
+		len = 1
 	end
-	if #_cmd_text - len == #vim.api.nvim_buf_get_lines(buffer, choice - 1, choice, false)[1] - 1 then
+	if #_cmd_text - len == #vim.api.nvim_buf_get_lines(buffer, choice - 1, choice, false)[1] then
 		if mapped then
 			vim.keymap.del("c", config.keymap.confirm)
 			vim.keymap.del("c", config.keymap.force)
