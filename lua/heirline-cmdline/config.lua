@@ -19,8 +19,10 @@ local M = {}
 --- @field max_item number
 --- @field source HierlineCmdlineSource[]
 --- @field keymap {confirm: string, next: string, prev: string, force: string}
+--- @field min_width number
 M.config = {
 	max_item = 7,
+	min_width = 15,
 	placeholder_char = "￼",
 	source = {
 		{
@@ -45,9 +47,9 @@ M.config = {
 		},
 	},
 	keymap = {
-		confirm = "<CR>",
-		next = "<Tab>",
-		prev = "<S-Tab>",
+		confirm = "<Tab>",
+		next = "<Down>",
+		prev = "<Up>",
 		force = "<M-CR>",
 	},
 }
